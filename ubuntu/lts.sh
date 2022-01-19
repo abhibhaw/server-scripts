@@ -83,10 +83,16 @@ echo "sudo certbot --nginx -d example.com -d www.example.com"
 
 if [[ "$1" == "docker" || "$2" == "docker" || "$3" == "docker" ]]; then
     install_docker
-elif [[ "$1" == "nginx" || "$2" == "nginx" || "$3" == "nginx" ]]; then
+fi
+
+if [[ "$1" == "nginx" || "$2" == "nginx" || "$3" == "nginx" ]]; then
     install_nginx
-elif [[ "$1" == "cert" || "$2" == "cert" || "$3" == "cert" ]]; then
+fi
+
+if [[ "$1" == "cert" || "$2" == "cert" || "$3" == "cert" ]]; then
     install_certbot_nginx
-else
+fi
+
+if [ $# -eq 0 ]; then
     echo "Tell me what to install docker / nginx / certbot ?"
 fi
