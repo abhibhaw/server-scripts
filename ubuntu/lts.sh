@@ -49,7 +49,7 @@ sudo apt update
 
 # Install NGINx
 
-sudo apt install NGINx
+sudo apt install nginx
 
 echo "NGINX Installation success"
 
