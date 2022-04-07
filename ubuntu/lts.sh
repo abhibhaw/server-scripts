@@ -106,7 +106,7 @@ if [[ "$1" == "cert" || "$2" == "cert" || "$3" == "cert" || "$4" == "cert" ]]; t
 fi
 
 if [[ "$1" == "node" || "$2" == "node" || "$3" == "node" || "$4" == "node" ]]; then
-    install_certbot_nginx
+    nvm_node
 fi
 
 if [ $# -eq 0 ]; then
