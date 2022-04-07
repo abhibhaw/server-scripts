@@ -81,18 +81,34 @@ echo "sudo certbot --nginx -d example.com -d www.example.com"
 
 }
 
-if [[ "$1" == "docker" || "$2" == "docker" || "$3" == "docker" ]]; then
+function nvm_node(){
+echo "Installing nvm and node lts"
+# Get nvm 0.39.1    
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# Install lts node
+nvm install --lts
+echo "Node installed successfully"
+node -v
+}
+
+if [[ "$1" == "docker" || "$2" == "docker" || "$3" == "docker" || "$4" == "docker" ]]; then
     install_docker
 fi
 
-if [[ "$1" == "nginx" || "$2" == "nginx" || "$3" == "nginx" ]]; then
+if [[ "$1" == "nginx" || "$2" == "nginx" || "$3" == "nginx" || "$4" == "nginx" ]]; then
     install_nginx
 fi
 
-if [[ "$1" == "cert" || "$2" == "cert" || "$3" == "cert" ]]; then
+if [[ "$1" == "cert" || "$2" == "cert" || "$3" == "cert" || "$4" == "cert" ]]; then
+    install_certbot_nginx
+fi
+
+if [[ "$1" == "node" || "$2" == "node" || "$3" == "node" || "$4" == "node" ]]; then
     install_certbot_nginx
 fi
 
 if [ $# -eq 0 ]; then
-    echo "Tell me what to install docker / nginx / certbot ?"
+    echo "Tell me what to install docker / nginx / certbot / node ?"
 fi
