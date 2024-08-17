@@ -11,7 +11,7 @@ sudo apt-get remove docker docker-engine docker.io containerd runc
 # Let's setup the apt repo over HTTPS
 sudo apt-get update
 
-sudo apt-get install \
+sudo apt-get install -y \
     ca-certificates \
     curl \
     gnupg \
@@ -33,7 +33,7 @@ sudo apt-get update
 
 # Let's finally insall docker engine
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # To run docker without sudo
 
