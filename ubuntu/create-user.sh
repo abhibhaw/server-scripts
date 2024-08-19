@@ -40,6 +40,8 @@ chmod 600 "$AUTHORIZED_KEYS_FILE"
 
 # Add user to the sudo group
 usermod -aG sudo "$USERNAME"
+# Add user to the sudo group
+usermod -aG docker "$USERNAME"
 
 # Create sudoers file for the user
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > "$SUDOERS_FILE"
