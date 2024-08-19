@@ -8,16 +8,17 @@ fi
 
 # Variables
 USERNAME=$1
-SUDOERS_FILE="/etc/sudoers.d/$USERNAME"
-SSH_DIR="/home/$USERNAME/.ssh"
-AUTHORIZED_KEYS_FILE="$SSH_DIR/authorized_keys"
-PRIVATE_KEY_FILE="/root/$USERNAME-private-key"
 
 # Check if username is provided
 if [ -z "$USERNAME" ]; then
   echo "Usage: $0 <username>, no username provided taking default as autopilot"
   USERNAME="autopilot"
 fi
+
+SUDOERS_FILE="/etc/sudoers.d/$USERNAME"
+SSH_DIR="/home/$USERNAME/.ssh"
+AUTHORIZED_KEYS_FILE="$SSH_DIR/authorized_keys"
+PRIVATE_KEY_FILE="/root/$USERNAME-private-key"
 
 # Create the user with no password
 useradd -m -s /bin/sh "$USERNAME"
