@@ -23,11 +23,16 @@ PRIVATE_KEY_FILE="/root/$USERNAME-private-key"
 # Create the user with no password
 useradd -m -s /bin/sh "$USERNAME"
 
+# Create the .ssh directory and set the correct permissions
+mkdir -p "$SSH_DIR"
+chown "$USERNAME:$USERNAME" "$SSH_DIR"
+chmod 700 "$SSH_DIR"
+
 # Generate SSH key pair
 ssh-keygen -t rsa -b 4096 -N "" -f "$SSH_DIR/id_rsa"
+chown "$USERNAME:$USERNAME" "$SSH_DIR/id_rsa" "$SSH_DIR/id_rsa.pub"
 
 # Set up the SSH directory and authorized_keys file
-mkdir -p "$SSH_DIR"
 cat "$SSH_DIR/id_rsa.pub" > "$AUTHORIZED_KEYS_FILE"
 chown -R "$USERNAME:$USERNAME" "$SSH_DIR"
 chmod 700 "$SSH_DIR"
@@ -36,12 +41,9 @@ chmod 600 "$AUTHORIZED_KEYS_FILE"
 # Add user to the sudo group
 usermod -aG sudo "$USERNAME"
 
-# Create a sudoers file for the user to allow passwordless sudo
+# Create sudoers file for the user
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > "$SUDOERS_FILE"
-
-# Set the correct permissions for the sudoers file
 chmod 440 "$SUDOERS_FILE"
-
 # Disable password authentication for the user
 passwd -l "$USERNAME"
 
@@ -50,4 +52,4 @@ echo "Private key for user $USERNAME:"
 cat "$SSH_DIR/id_rsa" > "$PRIVATE_KEY_FILE"
 cat "$PRIVATE_KEY_FILE"
 
-echo "User $USERNAME has been created with SSH key access and granted sudo privileges without a password prompt."
+echo "User $USERNAME created and configured successfully."
