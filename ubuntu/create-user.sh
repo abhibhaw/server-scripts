@@ -8,23 +8,26 @@ fi
 
 # Variables
 USERNAME=$1
-SSH_PUBLIC_KEY=$2
 SUDOERS_FILE="/etc/sudoers.d/$USERNAME"
 SSH_DIR="/home/$USERNAME/.ssh"
 AUTHORIZED_KEYS_FILE="$SSH_DIR/authorized_keys"
+PRIVATE_KEY_FILE="/root/$USERNAME-private-key"
 
-# Check if username and SSH public key are provided
-if [ -z "$USERNAME" ] || [ -z "$SSH_PUBLIC_KEY" ]; then
-  echo "Usage: $0 <username> <ssh_public_key>"
-  exit 1
+# Check if username is provided
+if [ -z "$USERNAME" ]; then
+  echo "Usage: $0 <username>, no username provided taking default as autopilot"
+  USERNAME="autopilot"
 fi
 
 # Create the user with no password
 useradd -m -s /bin/sh "$USERNAME"
 
+# Generate SSH key pair
+ssh-keygen -t rsa -b 4096 -N "" -f "$SSH_DIR/id_rsa"
+
 # Set up the SSH directory and authorized_keys file
 mkdir -p "$SSH_DIR"
-echo "$SSH_PUBLIC_KEY" > "$AUTHORIZED_KEYS_FILE"
+cat "$SSH_DIR/id_rsa.pub" > "$AUTHORIZED_KEYS_FILE"
 chown -R "$USERNAME:$USERNAME" "$SSH_DIR"
 chmod 700 "$SSH_DIR"
 chmod 600 "$AUTHORIZED_KEYS_FILE"
@@ -40,5 +43,10 @@ chmod 440 "$SUDOERS_FILE"
 
 # Disable password authentication for the user
 passwd -l "$USERNAME"
+
+# Echo the private key
+echo "Private key for user $USERNAME:"
+cat "$SSH_DIR/id_rsa" > "$PRIVATE_KEY_FILE"
+cat "$PRIVATE_KEY_FILE"
 
 echo "User $USERNAME has been created with SSH key access and granted sudo privileges without a password prompt."
